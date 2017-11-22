@@ -102,6 +102,7 @@
     "nodemon": "^1.12.1",
     "react-test-renderer": "^16.1.1",
     "redux-logger": "^3.0.6",
+    "redux-test-utils": "^0.2.1",
     "webpack-dev-server": "^2.9.4"
   }
 }
