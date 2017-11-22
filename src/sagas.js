@@ -1,7 +1,7 @@
 import { fork, takeEvery, select, call, put } from 'redux-saga/effects';
 import axios from 'axios';
 
-import { resultLoaded } from '../actions';
+import { resultLoaded } from './actions';
 
 export const selectInputString = state => state.testString;
 
@@ -20,15 +20,13 @@ export function *loadProcessedResult() {
         yield put(resultLoaded({ result }));
     }
     catch (err) {
-        yield put(resultLoaded({ err }));
+        yield put(resultLoaded({ err: err.message }));
     }
 }
 
-export function *watchLoad() {
-    yield takeEvery('LOAD_INITIATED', loadProcessedResult);
-}
-
 export default function *rootSaga() {
-    yield fork(watchLoad);
+    yield fork(function *watchLoadResult() {
+        yield takeEvery('LOAD_INITIATED', loadProcessedResult);
+    });
 }
 
