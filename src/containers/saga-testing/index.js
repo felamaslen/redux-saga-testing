@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { inputChanged, loadInitiated } from '../../actions/app.actions';
+import { inputChanged, loadInitiated } from '../../actions';
 
 import React from 'react';
 import PropTypes from 'prop-types';
