@@ -38,6 +38,9 @@ describe('Sagas - test type 0 (native)', () => {
 
             // assert that something was done
             expect(result.value).to.deep.equal(select(sagas.selectInputString));
+
+            // call next() and assert that the saga is not done
+            expect(gen.next().done).to.equal(false)
         });
 
         it('should call the API with the encoded string', () => {
@@ -51,6 +54,9 @@ describe('Sagas - test type 0 (native)', () => {
 
             // assert on the next yield from the saga
             expect(result.value).to.deep.equal(call(axios.get, 'evaluate-postfix?postfix=3%202%20%2B%205%20%2F'));
+
+            // call next() and assert that the saga is not done
+            expect(gen.next().done).to.equal(false)
         });
 
         it('should dispatch an action with the result, if it was valid', () => {
@@ -65,6 +71,9 @@ describe('Sagas - test type 0 (native)', () => {
 
             // assert on the next yield from the saga - it should be an action dispatch
             expect(result.value).to.deep.equal(put({ type: 'RESULT_LOADED', result: 1 }));
+
+            // call next() and assert that the saga is done
+            expect(gen.next().done).to.equal(true)
         });
 
         // see if you can understand what the below code does - it's the same principles as the above :)
@@ -77,6 +86,8 @@ describe('Sagas - test type 0 (native)', () => {
             const result = gen.throw(new Error('something bad happened'));
 
             expect(result.value).to.deep.equal(put({ type: 'RESULT_LOADED', err: 'something bad happened' }));
+
+            expect(gen.next().done).to.equal(true)
         });
 
         it('should dispatch an error action if the server returned bad data', () => {
@@ -87,6 +98,8 @@ describe('Sagas - test type 0 (native)', () => {
             const result = gen.next({ data: { result: 'not-a-number' } });
 
             expect(result.value).to.deep.equal(put({ type: 'RESULT_LOADED', err: 'invalid result' }));
+
+            expect(gen.next().done).to.equal(true)
         });
     });
 });
