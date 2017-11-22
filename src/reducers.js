@@ -1,8 +1,8 @@
 import { createReducer } from 'redux-create-reducer';
 
-import initialState from '../store/initial-state';
+import initialState from './store/initial-state';
 
-function loadResult(state, { result, err }) {
+export function loadResult(state, { result, err }) {
     if (err) {
         return {
             ...state,
