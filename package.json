@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Demo for testing redux-sagas",
   "main": "index.js",
+  "engines": {
+    "node": "=8"
+  },
   "scripts": {
     "postinstall": "NODE_ENV=production ./node_modules/.bin/webpack",
     "start": "NODE_ENV=production node index.js",
