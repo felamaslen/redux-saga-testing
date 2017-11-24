@@ -3,10 +3,13 @@ import axios from 'axios';
 
 import { resultLoaded } from './actions';
 
-export const selectInputString = category => state => state.testString[category];
+export const selectInputString = {
+    postfix: state => state.testString.postfix,
+    infix: state => state.testString.infix
+};
 
 export function *loadProcessedResult({ category }) {
-    const raw = yield select(selectInputString(category));
+    const raw = yield select(selectInputString[category]);
 
     try {
         const { data } = yield call(axios.get, `evaluate-${category}?${category}=${encodeURIComponent(raw)}`);
