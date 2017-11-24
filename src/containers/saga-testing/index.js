@@ -14,6 +14,9 @@ export function SagaTesting({ testString, result, error, onChange, onLoad }) {
         <InputGroup category="postfix" onChange={onChange} onLoad={onLoad}
             errorValue={error} value={testString} result={result}
         />
+        <InputGroup category="infix" onChange={onChange} onLoad={onLoad}
+            errorValue={error} value={testString} result={result}
+        />
     </div>;
 }
 

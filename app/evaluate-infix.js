@@ -4,7 +4,13 @@ const evaluatePostfix = require('./evaluate-postfix');
 function evaluateInfix(raw) {
     const postfix = infixToPostfix(raw);
 
-    return evaluatePostfix(postfix);
+    const result = evaluatePostfix(postfix);
+
+    if (result === null || isNaN(result)) {
+        throw new Error('invalid string');
+    }
+
+    return result;
 }
 
 module.exports = evaluateInfix;
