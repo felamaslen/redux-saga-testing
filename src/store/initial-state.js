@@ -1,6 +1,9 @@
 export default {
-    testString: '',
-    result: null,
+    testString: {
+        postfix: '',
+        infix: ''
+    },
+    result: {},
     error: false
 };
 

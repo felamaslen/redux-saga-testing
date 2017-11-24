@@ -1,12 +1,19 @@
 .saga-testing-outer {
     display: flex;
-    margin: 1em;
-    width: 90%;
-    justify-content: space-between;
+    width: 100%;
     align-items: center;
-    background-color: #ececec;
-    border-radius: 3px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+    flex-flow: column;
+
+    .input-group-outer {
+        display: flex;
+        margin: 1em;
+        width: 90%;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #ececec;
+        border-radius: 3px;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+    }
 
     .input-outer {
         display: flex;
