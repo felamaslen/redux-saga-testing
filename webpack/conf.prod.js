@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const path = require('path');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -24,6 +25,10 @@ const injectedEnvVars = {
 
 module.exports = (...args) => ({
     ...webpackConfig,
+    output: {
+        path: path.join(__dirname, '../static'),
+        filename: 'js/bundle.js'
+    },
     plugins: [
         ...webpackConfig.plugins(...args),
         new ExtractTextPlugin('css/style.css'),

@@ -1,6 +1,8 @@
+/* eslint-disable global-require */
 const path = require('path');
 const express = require('express');
 const winston = require('winston');
+const webpack = require('webpack');
 const { version } = require('../package.json');
 const evaluatePostfix = require('./evaluate-postfix');
 const evaluateInfix = require('./evaluate-infix');
@@ -48,6 +50,29 @@ function run() {
             }
         }
     }));
+
+    if (process.env.NODE_ENV === 'development') {
+        const webpackConfig = require('../webpack.config')();
+
+        const compiler = webpack(webpackConfig);
+
+        app.use(require('webpack-dev-middleware')(compiler, {
+            publicPath: webpackConfig.output.publicPath,
+            stats: {
+                colors: true,
+                modules: false,
+                chunks: false,
+                reasons: false
+            },
+            hot: true,
+            quiet: false,
+            noInfo: false
+        }));
+
+        app.use(require('webpack-hot-middleware')(compiler, {
+            log: console.log
+        }));
+    }
 
     app.use(express.static(path.join(__dirname, 'static')));
 
