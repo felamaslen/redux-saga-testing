@@ -1,4 +1,4 @@
-const operators = require('./operators');
+const { OPERATORS } = require('./operators');
 
 function evaluatePostfix(raw) {
     if (!raw.length) {
@@ -9,11 +9,11 @@ function evaluatePostfix(raw) {
         .replace(/(\s+|,)/, ' ')
         .split(' ')
         .reduce((stack, char) => {
-            if (char in operators) {
+            if (char in OPERATORS) {
                 const arg2 = stack.pop();
                 const arg1 = stack.pop();
 
-                return [...stack, operators[char](arg1, arg2)];
+                return [...stack, OPERATORS[char](arg1, arg2)];
             }
 
             return [...stack, Number(char)];
