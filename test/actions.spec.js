@@ -4,13 +4,13 @@ import * as A from '../src/actions';
 describe('Actions', () => {
     describe('inputChanged', () => {
         it('should return INPUT_CHANGED with value', () => {
-            expect(A.inputChanged('foo')).to.deep.equal({ type: 'INPUT_CHANGED', value: 'foo' });
+            expect(A.inputChanged('postfix', 'foo')).to.deep.equal({ type: 'INPUT_CHANGED', category: 'postfix', value: 'foo' });
         });
     });
 
     describe('loadInitiated', () => {
         it('should return LOAD_INITIATED', () => {
-            expect(A.loadInitiated()).to.deep.equal({ type: 'LOAD_INITIATED' });
+            expect(A.loadInitiated('postfix')).to.deep.equal({ type: 'LOAD_INITIATED', category: 'postfix' });
         });
     });
 

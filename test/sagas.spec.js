@@ -10,7 +10,11 @@ import axios from 'axios';
 describe('Sagas - test type 0 (native)', () => {
     describe('selectInputString', () => {
         it('should get testString from state', () => {
-            expect(sagas.selectInputString({ testString: 'foo', foo: 'bar' })).to.equal('foo');
+            expect(sagas.selectInputString.postfix({ testString: { postfix: 'foo' }, foo: 'bar' }))
+                .to.equal('foo');
+
+            expect(sagas.selectInputString.infix({ testString: { infix: 'foo' }, foo: 'bar' }))
+                .to.equal('foo');
         });
     });
 
@@ -29,7 +33,7 @@ describe('Sagas - test type 0 (native)', () => {
         let gen = null;
         beforeEach(() => {
             // create an instance of the generator function before each test
-            gen = sagas.loadProcessedResult();
+            gen = sagas.loadProcessedResult({ category: 'postfix' });
         });
 
         it('should select the test string from state', () => {
@@ -37,7 +41,7 @@ describe('Sagas - test type 0 (native)', () => {
             const result = gen.next();
 
             // assert that something was done
-            expect(result.value).to.deep.equal(select(sagas.selectInputString));
+            expect(result.value).to.deep.equal(select(sagas.selectInputString.postfix));
 
             // call next() and assert that the saga is not done
             expect(gen.next().done).to.equal(false)
@@ -70,7 +74,7 @@ describe('Sagas - test type 0 (native)', () => {
             const result = gen.next({ data: { result: 1 } });
 
             // assert on the next yield from the saga - it should be an action dispatch
-            expect(result.value).to.deep.equal(put({ type: 'RESULT_LOADED', result: 1 }));
+            expect(result.value).to.deep.equal(put({ type: 'RESULT_LOADED', category: 'postfix', result: 1 }));
 
             // call next() and assert that the saga is done
             expect(gen.next().done).to.equal(true)
@@ -85,7 +89,7 @@ describe('Sagas - test type 0 (native)', () => {
             // simulate the throwing of an error
             const result = gen.throw(new Error('something bad happened'));
 
-            expect(result.value).to.deep.equal(put({ type: 'RESULT_LOADED', err: 'something bad happened' }));
+            expect(result.value).to.deep.equal(put({ type: 'RESULT_LOADED', category: 'postfix', err: 'something bad happened' }));
 
             expect(gen.next().done).to.equal(true)
         });
@@ -97,7 +101,7 @@ describe('Sagas - test type 0 (native)', () => {
 
             const result = gen.next({ data: { result: 'not-a-number' } });
 
-            expect(result.value).to.deep.equal(put({ type: 'RESULT_LOADED', err: 'invalid result' }));
+            expect(result.value).to.deep.equal(put({ type: 'RESULT_LOADED', category: 'postfix', err: 'invalid result' }));
 
             expect(gen.next().done).to.equal(true)
         });

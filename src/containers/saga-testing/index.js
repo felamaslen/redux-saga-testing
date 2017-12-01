@@ -4,36 +4,29 @@ import { inputChanged, loadInitiated } from '../../actions';
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
+
+import InputGroup from '../../components/input-group';
 
 import './style.scss';
 
 export function SagaTesting({ testString, result, error, onChange, onLoad }) {
-    const inputClasses = classNames({
-        'saga-testing-input': true,
-        error
-    });
-
-    const displayedResult = error
-        ? 'Invalid postfix string!'
-        : `Result: ${result || ''}`;
-
     return <div className="saga-testing-outer">
-        <span className="input-outer">
-            <label>{'Input a postfix expression here:'}</label>
-            <input className={inputClasses} value={testString} onChange={onChange} />
-        </span>
-        <button className="saga-testing-submit-button" onClick={onLoad}>{'Load'}</button>
-        <span className="saga-testing-result">
-            {displayedResult}
-        </span>
+        <InputGroup category="postfix" onChange={onChange} onLoad={onLoad}
+            errorValue={error} value={testString} result={result}
+        />
+        <InputGroup category="infix" onChange={onChange} onLoad={onLoad}
+            errorValue={error} value={testString} result={result}
+        />
     </div>;
 }
 
 SagaTesting.propTypes = {
-    testString: PropTypes.string.isRequired,
-    result: PropTypes.number,
-    error: PropTypes.bool.isRequired,
+    testString: PropTypes.object.isRequired,
+    result: PropTypes.object.isRequired,
+    error: PropTypes.oneOfType([
+        PropTypes.bool,
+        PropTypes.string
+    ]).isRequired,
     onChange: PropTypes.func.isRequired,
     onLoad: PropTypes.func.isRequired
 };
@@ -45,8 +38,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    onChange: evt => dispatch(inputChanged(evt.target.value)),
-    onLoad: () => dispatch(loadInitiated())
+    onChange: category => evt => dispatch(inputChanged(category, evt.target.value)),
+    onLoad: category => () => dispatch(loadInitiated(category))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SagaTesting);

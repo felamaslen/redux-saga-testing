@@ -29,12 +29,12 @@ describe('Sagas - test type 1 (using redux-saga-test-plan)', () => {
          */
 
         it('should call the API and dispatch an action with the result', () => {
-            testSaga(sagas.loadProcessedResult)
+            testSaga(sagas.loadProcessedResult, { category: 'postfix' })
                 // call next() once to run the saga
                 .next()
 
                 // assert on the first yield, which is a select to get stuff from state
-                .select(sagas.selectInputString)
+                .select(sagas.selectInputString.postfix)
 
                 // call next() with a simulated value resulting from the select() call
                 .next('3 2 + 5 /')
@@ -46,7 +46,7 @@ describe('Sagas - test type 1 (using redux-saga-test-plan)', () => {
                 .next({ data: { result: 1 } })
 
                 // assert on the third yield, which is a dispatch
-                .put({ type: 'RESULT_LOADED', result: 1 })
+                .put({ type: 'RESULT_LOADED', category: 'postfix', result: 1 })
 
                 // call next() to simulate this yield
                 .next()
@@ -56,23 +56,23 @@ describe('Sagas - test type 1 (using redux-saga-test-plan)', () => {
         });
 
         it('should dispatch an error action if an error occurred', () => {
-            testSaga(sagas.loadProcessedResult)
+            testSaga(sagas.loadProcessedResult, { category: 'postfix' })
                 .next()
-                .select(sagas.selectInputString)
+                .select(sagas.selectInputString.postfix)
                 .next('foobar')
                 .call(axios.get, 'evaluate-postfix?postfix=foobar')
                 .throw(new Error('something bad happened'))
-                .put({ type: 'RESULT_LOADED', err: 'something bad happened' })
+                .put({ type: 'RESULT_LOADED', category: 'postfix', err: 'something bad happened' })
                 .next()
                 .isDone();
 
-            testSaga(sagas.loadProcessedResult)
+            testSaga(sagas.loadProcessedResult, { category: 'postfix' })
                 .next()
-                .select(sagas.selectInputString)
+                .select(sagas.selectInputString.postfix)
                 .next('3 2 + 5 /')
                 .call(axios.get, 'evaluate-postfix?postfix=3%202%20%2B%205%20%2F')
                 .next({ data: { result: 'not-a-number' } })
-                .put({ type: 'RESULT_LOADED', err: 'invalid result' })
+                .put({ type: 'RESULT_LOADED', category: 'postfix', err: 'invalid result' })
                 .next()
                 .isDone();
         });
