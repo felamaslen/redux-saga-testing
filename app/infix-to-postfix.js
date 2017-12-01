@@ -82,21 +82,28 @@ function processCharsWithBrackets(chars) {
                 !(chars[index - 1] in OPERATORS) && chars[index + 1].match(/\s/);
 
             if (isOperator) {
-                const popAndPrint = ops.length && PRECEDENCE[ops[ops.length - 1].char] < PRECEDENCE[char];
+                const poppedOps = ops
+                    .slice()
+                    .reverse()
+                    .reduce(({ stop, popped }, op) => {
+                        if (stop) {
+                            return { stop, popped };
+                        }
 
-                const operator = { char, type: TYPE_OPERATOR };
+                        const higherPrecedence = PRECEDENCE[op.char] > PRECEDENCE[char];
 
-                if (popAndPrint) {
-                    return {
-                        items: [...items, ops.pop()],
-                        ops: [...ops, operator],
-                        continueNumber: false
-                    };
-                }
+                        if (higherPrecedence) {
+                            return { stop: true, popped };
+                        }
+
+                        return { stop, popped: [...popped, op] };
+
+                    }, { stop: false, popped: [] })
+                    .popped;
 
                 return {
-                    items,
-                    ops: [...ops, operator],
+                    items: [...items, ...poppedOps],
+                    ops: [...ops.slice(0, ops.length - poppedOps.length), { char, type: TYPE_OPERATOR }],
                     continueNumber: false
                 };
             }
