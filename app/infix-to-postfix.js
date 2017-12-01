@@ -51,7 +51,11 @@ function getCharsWithBrackets(bracketSections, infix) {
                 items: [],
                 start: 0
             })
-            .items;
+            .items
+            .concat(infix
+                .substring(bracketSections[bracketSections.length - 1].close + 1)
+                .split('')
+            );
     }
 
     return infix.split('');
