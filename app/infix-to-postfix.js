@@ -1,4 +1,4 @@
-const operators = require('./operators');
+const { OPERATORS, PRECEDENCE } = require('./operators');
 
 const BRACKET = 0xB00000;
 
@@ -58,36 +58,65 @@ function getCharsWithBrackets(bracketSections, infix) {
 }
 
 function processCharsWithBrackets(chars) {
-    return chars
-        .reduce((items, char, index) => {
+    const stacks = chars
+        .reduce(({ items, ops, continueNumber }, char, index) => {
             const whitespace = Boolean(typeof char === 'string' && char.match(/\s/));
             if (whitespace) {
-                return items;
+                return { items, ops, continueNumber: false };
             }
 
             const isBracket = char === BRACKET;
             if (isBracket) {
-                return [...items, { char, type: TYPE_GROUP }];
+                return {
+                    items: [...items, { char, type: TYPE_GROUP }],
+                    ops,
+                    continueNumber: false
+                };
             }
 
-            const isOperator = index > 0 && index < chars.length - 1 && char in operators &&
-                !(chars[index - 1] in operators) && chars[index + 1].match(/\s/);
+            const isOperator = index > 0 && index < chars.length - 1 && char in OPERATORS &&
+                !(chars[index - 1] in OPERATORS) && chars[index + 1].match(/\s/);
 
             if (isOperator) {
-                return [...items, { char, type: TYPE_OPERATOR }];
+                const popAndPrint = ops.length && PRECEDENCE[ops[ops.length - 1].char] < PRECEDENCE[char];
+
+                const operator = { char, type: TYPE_OPERATOR };
+
+                if (popAndPrint) {
+                    return {
+                        items: [...items, ops.pop()],
+                        ops: [...ops, operator],
+                        continueNumber: false
+                    };
+                }
+
+                return {
+                    items,
+                    ops: [...ops, operator],
+                    continueNumber: false
+                };
             }
 
-            const continueNumber = index > 0 && items[items.length - 1].type === TYPE_NUMBER;
             if (continueNumber) {
-                return [...items.slice(0, items.length - 1), {
-                    char: `${items[items.length - 1].char}${char}`,
-                    type: TYPE_NUMBER
-                }];
+                return {
+                    items: [...items.slice(0, items.length - 1), {
+                        char: `${items[items.length - 1].char}${char}`,
+                        type: TYPE_NUMBER
+                    }],
+                    ops,
+                    continueNumber: true
+                };
             }
 
-            return [...items, { char, type: TYPE_NUMBER }];
+            return {
+                items: [...items, { char, type: TYPE_NUMBER }],
+                ops,
+                continueNumber: true
+            };
 
-        }, []);
+        }, { items: [], ops: [], continueNumber: false });
+
+    return [...stacks.items, ...stacks.ops.reverse()];
 }
 
 function infixToPostfix(infix = '2 + 3 * (5 / 2)', level = 0) {
@@ -105,28 +134,7 @@ function infixToPostfix(infix = '2 + 3 * (5 / 2)', level = 0) {
     let bracketIndex = -1;
 
     return bits
-        .reduce(({ stack, skip }, { char, type }, index) => {
-            if (skip) {
-                return { stack, skip: false };
-            }
-
-            if (type === TYPE_OPERATOR) {
-                return {
-                    stack: [...stack, bits[index + 1].char, char],
-                    skip: true
-                };
-            }
-
-            return {
-                stack: [...stack, char],
-                skip
-            };
-
-        }, {
-            stack: [],
-            skip: false
-        })
-        .stack
+        .map(({ char }) => char)
         .join(' ')
         .replace(new RegExp(BRACKET, 'g'), () => {
             bracketIndex++;
