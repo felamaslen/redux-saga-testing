@@ -33,5 +33,12 @@ describe('Infix to Postfix converter', () => {
         expect(infixToPostfix('(21 * -3.2) / (5 - 1)')).to.equal('21 -3.2 * 5 1 - /');
         expect(infixToPostfix('((3.2 * 5) * (-20 / -3))')).to.equal('3.2 5 * -20 -3 / *');
     });
+    it('should handle powers', () => {
+        expect(infixToPostfix('21 ^ 3 * 2 - 10')).to.equal('21 3 ^ 2 * 10 -');
+        expect(infixToPostfix('21 ^ (3 * 2) - 10')).to.equal('21 3 2 * ^ 10 -');
+        expect(infixToPostfix('5 - 21 ^ 3 + 10')).to.equal('5 21 3 ^ 10 + -');
+        expect(infixToPostfix('5 + 21 ^ 3 - 10')).to.equal('5 21 3 ^ 10 - +');
+        expect(infixToPostfix('(5 + 21) ^ 3 - 10')).to.equal('5 21 + 3 ^ 10 -');
+    });
 });
 

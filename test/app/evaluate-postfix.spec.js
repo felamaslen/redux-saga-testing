@@ -20,5 +20,12 @@ describe('Postfix evaluator', () => {
         expect(evaluatePostfix('1 2 / 3 /')).to.equal(1 / 6);
         expect(evaluatePostfix('1 2 + 3 /')).to.equal(1);
     });
+    it('should handle power operators', () => {
+        expect(evaluatePostfix('1 2 ^ 3 ^')).to.equal(1);
+        expect(evaluatePostfix('1 2 3 ^ ^')).to.equal(1);
+        expect(evaluatePostfix('2 1 ^ 3 ^')).to.equal(8);
+        expect(evaluatePostfix('2 1 3 ^ ^')).to.equal(2);
+        expect(evaluatePostfix('2 10 ^ 2 /')).to.equal(512);
+    });
 });
 
