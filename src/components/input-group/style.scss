@@ -17,7 +17,7 @@ $button-background-color: rgb(86, 0, 55);
         label {
             display: none;
         }
-        .saga-testing-input {
+        .calculator-input {
             margin: 0;
             padding: 0 3px;
             width: 100%;
@@ -37,7 +37,7 @@ $button-background-color: rgb(86, 0, 55);
         }
     }
 
-    .saga-testing-submit-button {
+    .calculator-submit-button {
         display: flex;
         margin: 0;
         padding: 0;
@@ -57,7 +57,7 @@ $button-background-color: rgb(86, 0, 55);
         }
     }
 
-    .saga-testing-result {
+    .calculator-result {
         display: none;
     }
 }

@@ -1,7 +1,7 @@
 {
-  "name": "saga-testing",
+  "name": "calculator",
   "version": "1.0.0",
-  "description": "Demo for testing redux-sagas",
+  "description": "Simple calculator app",
   "main": "index.js",
   "engines": {
     "node": "=8"
