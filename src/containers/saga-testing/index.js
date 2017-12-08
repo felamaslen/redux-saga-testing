@@ -11,9 +11,6 @@ import './style.scss';
 
 export function SagaTesting({ testString, result, error, onChange, onLoad }) {
     return <div className="saga-testing-outer">
-        <InputGroup category="postfix" onChange={onChange} onLoad={onLoad}
-            errorValue={error} value={testString} result={result}
-        />
         <InputGroup category="infix" onChange={onChange} onLoad={onLoad}
             errorValue={error} value={testString} result={result}
         />
