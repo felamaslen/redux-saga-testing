@@ -68,6 +68,15 @@ describe('<InputGroup />', () => {
 
             expect(changed).to.equal(true);
         });
+        it('should dispatch a load event when the enter key is pressed', () => {
+            const wrapper = shallow(<InputGroup {...props} />);
+
+            expect(loaded).to.equal(null);
+
+            wrapper.childAt(0).childAt(1).simulate('keypress', { key: 'Enter' });
+
+            expect(loaded).to.equal(true);
+        });
     });
 
     describe('Load button', () => {

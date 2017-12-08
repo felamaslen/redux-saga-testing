@@ -22,10 +22,16 @@ export default function InputGroup({ onChange, onLoad, error, value, result }) {
         error
     });
 
+    const onKeyPress = evt => {
+        if (evt.key === 'Enter') {
+            onLoad();
+        }
+    };
+
     return <div className="input-group-outer">
         <span className="input-outer">
             <label>{'Input an infix expression here:'}</label>
-            <input className={inputClasses} value={value} onChange={onChange} />
+            <input className={inputClasses} value={value} onChange={onChange} onKeyPress={onKeyPress} />
         </span>
         <button className="saga-testing-submit-button" onClick={onLoad}>{'Load'}</button>
         <span className="saga-testing-result">
