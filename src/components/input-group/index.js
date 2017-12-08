@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
+import './style.scss';
+
 function getDisplayedResult(error, result) {
     if (error) {
         return 'Invalid input! (Must be infix string)';

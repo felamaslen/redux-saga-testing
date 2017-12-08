@@ -5,7 +5,12 @@ body {
 
 .app-root {
     display: flex;
+    margin: 1em;
     align-items: center;
     justify-content: center;
+    background-color: rgb(42, 12, 32);
+    color: white;
+    border-radius: 2px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
 }
 

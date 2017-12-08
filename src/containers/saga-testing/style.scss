@@ -3,56 +3,5 @@
     width: 100%;
     align-items: center;
     flex-flow: column;
-
-    .input-group-outer {
-        display: flex;
-        margin: 1em;
-        width: 90%;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #ececec;
-        border-radius: 3px;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
-    }
-
-    .input-outer {
-        display: flex;
-        margin: 1em;
-        border-radius: 3px;
-        flex-flow: column;
-    }
-
-    .saga-testing-input {
-        margin: 0.3em 0;
-        padding: 0 0.2em;
-        line-height: 1.5em;
-        font-size: 10pt;
-        outline: none;
-        border: 1px solid #ccc;
-        border-radius: 2px;
-
-        &.error {
-            background-color: #fee;
-            border-color: #c99;
-        }
-    }
-
-    .saga-testing-result {
-        flex: 1 0 0;
-    }
-
-    .saga-testing-submit-button {
-        margin: 1em;
-        padding: 0.6em 1em;
-        background: #fff;
-        border: 1px solid #ccc;
-        border-radius: 2px;
-        outline: none;
-
-        &:active {
-            background: #c9c9c9;
-            border-color: #b1b1b1;
-        }
-    }
 }
 
