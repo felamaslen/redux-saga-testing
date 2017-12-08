@@ -26,6 +26,7 @@ export function loadResult(state, { result, err }) {
                 result
             }
         ],
+        input: '',
         result
     };
 }

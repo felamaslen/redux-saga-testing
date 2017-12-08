@@ -24,7 +24,7 @@ describe('Reducers', () => {
                         { input: '5 * 2', result: 10 }
                     ],
                     result: 10,
-                    input: '5 * 2',
+                    input: '',
                     error: false
                 });
         });
