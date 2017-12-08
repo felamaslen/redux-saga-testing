@@ -1,0 +1,33 @@
+$color-input: white;
+$color-result: rgb(90, 149, 194);
+$results-height: 400px;
+
+.results-history {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    list-style: none;
+    font-size: 10pt;
+    height: $results-height;
+    overflow-y: auto;
+
+    .result-history-item {
+        display: flex;
+        margin: 5px 0 1em 0;
+        padding: 0 5px;
+        flex-flow: column;
+
+        .input {
+            color: $color-input;
+        }
+        .result {
+            color: $color-result;
+
+            &::before {
+                content: '=\00a0';
+                color: rgb(161, 127, 18);
+            }
+        }
+    }
+}
+
