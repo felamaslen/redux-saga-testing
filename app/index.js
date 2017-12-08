@@ -74,7 +74,7 @@ function run() {
         }));
     }
 
-    app.use(express.static(path.join(__dirname, 'static')));
+    app.use(express.static(path.join(__dirname, '../static')));
 
     const port = process.env.PORT || 3000;
 
