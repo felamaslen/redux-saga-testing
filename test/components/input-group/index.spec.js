@@ -34,8 +34,8 @@ describe('<InputGroup />', () => {
         expect(wrapper.children()).to.have.length(3);
 
         expect(wrapper.childAt(0).is('span.input-outer')).to.equal(true);
-        expect(wrapper.childAt(1).is('button.saga-testing-submit-button')).to.equal(true);
-        expect(wrapper.childAt(2).is('span.saga-testing-result')).to.equal(true);
+        expect(wrapper.childAt(1).is('button.calculator-submit-button')).to.equal(true);
+        expect(wrapper.childAt(2).is('span.calculator-result')).to.equal(true);
     });
 
     describe('String input', () => {
@@ -47,7 +47,7 @@ describe('<InputGroup />', () => {
             expect(wrapper.childAt(0).childAt(0).is('label')).to.equal(true);
             expect(wrapper.childAt(0).childAt(0).text()).to.equal('Input an infix expression here:');
 
-            expect(wrapper.childAt(0).childAt(1).is('input.saga-testing-input')).to.equal(true);
+            expect(wrapper.childAt(0).childAt(1).is('input.calculator-input')).to.equal(true);
         });
         it('should render an error class', () => {
             const wrapper = shallow(<InputGroup {...props} error={true} />);

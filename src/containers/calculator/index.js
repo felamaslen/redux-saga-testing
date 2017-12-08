@@ -10,8 +10,8 @@ import InputGroup from '../../components/input-group';
 
 import './style.scss';
 
-export function SagaTesting({ input, history, result, error, onChange, onLoad }) {
-    return <div className="saga-testing-outer">
+export function Calculator({ input, history, result, error, onChange, onLoad }) {
+    return <div className="calculator-outer">
         <ResultsList history={history} />
         <InputGroup onChange={onChange} onLoad={onLoad}
             error={error} value={input} result={result}
@@ -19,7 +19,7 @@ export function SagaTesting({ input, history, result, error, onChange, onLoad })
     </div>;
 }
 
-SagaTesting.propTypes = {
+Calculator.propTypes = {
     input: PropTypes.string.isRequired,
     history: PropTypes.array.isRequired,
     result: PropTypes.number,
@@ -40,5 +40,5 @@ const mapDispatchToProps = dispatch => ({
     onLoad: () => dispatch(loadInitiated())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SagaTesting);
+export default connect(mapStateToProps, mapDispatchToProps)(Calculator);
 

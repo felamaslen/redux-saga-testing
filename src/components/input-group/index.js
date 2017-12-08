@@ -18,7 +18,7 @@ function getDisplayedResult(error, result) {
 
 export default function InputGroup({ onChange, onLoad, error, value, result }) {
     const inputClasses = classNames({
-        'saga-testing-input': true,
+        'calculator-input': true,
         error
     });
 
@@ -33,8 +33,8 @@ export default function InputGroup({ onChange, onLoad, error, value, result }) {
             <label>{'Input an infix expression here:'}</label>
             <input className={inputClasses} value={value} onChange={onChange} onKeyPress={onKeyPress} />
         </span>
-        <button className="saga-testing-submit-button" onClick={onLoad}>{'Load'}</button>
-        <span className="saga-testing-result">
+        <button className="calculator-submit-button" onClick={onLoad}>{'Load'}</button>
+        <span className="calculator-result">
             {getDisplayedResult(error, result)}
         </span>
     </div>;
