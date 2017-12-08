@@ -1,3 +1,4 @@
-# redux-saga-testing
+# calculator
 
-Simple demo project to show different ways of testing redux-saga
+This originated as a simple project to demo testing redux-saga, but has morphed into a full-blown (if feature-limited) calculator.
+
