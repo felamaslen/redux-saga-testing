@@ -2,39 +2,41 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-export default function InputGroup({ category, onChange, onLoad, errorValue, value, result }) {
-    const error = errorValue === category;
+function getDisplayedResult(error, result) {
+    if (error) {
+        return 'Invalid input! (Must be infix string)';
+    }
 
+    if (result === null) {
+        return '';
+    }
+
+    return `Result: ${result}`;
+}
+
+export default function InputGroup({ onChange, onLoad, error, value, result }) {
     const inputClasses = classNames({
         'saga-testing-input': true,
         error
     });
 
-    const displayedResult = error
-        ? `Invalid ${category} string!`
-        : `Result: ${result[category] || ''}`;
-
     return <div className="input-group-outer">
         <span className="input-outer">
-            <label>{'Input a '}{category}{' expression here:'}</label>
-            <input className={inputClasses} value={value[category]} onChange={onChange(category)} />
+            <label>{'Input an infix expression here:'}</label>
+            <input className={inputClasses} value={value} onChange={onChange} />
         </span>
-        <button className="saga-testing-submit-button" onClick={onLoad(category)}>{'Load'}</button>
+        <button className="saga-testing-submit-button" onClick={onLoad}>{'Load'}</button>
         <span className="saga-testing-result">
-            {displayedResult}
+            {getDisplayedResult(error, result)}
         </span>
     </div>;
 }
 
 InputGroup.propTypes = {
-    category: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     onLoad: PropTypes.func.isRequired,
-    errorValue: PropTypes.oneOfType([
-        PropTypes.bool,
-        PropTypes.string
-    ]).isRequired,
-    value: PropTypes.object.isRequired,
-    result: PropTypes.object.isRequired
+    error: PropTypes.bool.isRequired,
+    value: PropTypes.string.isRequired,
+    result: PropTypes.number
 };
 

@@ -1,6 +1,6 @@
-export const inputChanged = (category, value) => ({ type: 'INPUT_CHANGED', category, value });
+export const inputChanged = value => ({ type: 'INPUT_CHANGED', value });
 
-export const loadInitiated = category => ({ type: 'LOAD_INITIATED', category });
+export const loadInitiated = () => ({ type: 'LOAD_INITIATED' });
 
 export const resultLoaded = res => ({ type: 'RESULT_LOADED', ...res });
 

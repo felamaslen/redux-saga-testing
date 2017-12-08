@@ -4,30 +4,37 @@ import R from '../src/reducers';
 
 describe('Reducers', () => {
     describe('INPUT_CHANGED', () => {
-        it('should change testString in state', () => {
+        it('should change input in state', () => {
             expect(R(
-                { testString: {}, foo: 'bar' },
-                { type: 'INPUT_CHANGED', category: 'postfix', value: 'baz' }
+                { input: '' },
+                { type: 'INPUT_CHANGED', value: 'baz' }
             ))
-                .to.deep.equal({ testString: { postfix: 'baz' }, foo: 'bar' });
+                .to.deep.equal({ input: 'baz' });
         });
     });
 
     describe('RESULT_LOADED', () => {
         it('should insert the result into the state', () => {
             expect(R(
-                { result: null, foo: 'bar' },
-                { type: 'RESULT_LOADED', category: 'postfix', result: 10 }
+                { history: [], result: null, input: '5 * 2' },
+                { type: 'RESULT_LOADED', result: 10 }
             ))
-                .to.deep.equal({ result: { postfix: 10 }, error: false, foo: 'bar' });
+                .to.deep.equal({
+                    history: [
+                        { input: '5 * 2', result: 10 }
+                    ],
+                    result: 10,
+                    input: '5 * 2',
+                    error: false
+                });
         });
 
         it('should set error to true if an error occurred', () => {
             expect(R(
-                { result: { postfix: 10 }, error: false, foo: 'bar' },
-                { type: 'RESULT_LOADED', category: 'postfix', err: 'something bad happened' }
+                { result: 10, error: false },
+                { type: 'RESULT_LOADED', err: 'something bad happened' }
             ))
-                .to.deep.equal({ result: { postfix: null }, error: 'postfix', foo: 'bar' });
+                .to.deep.equal({ result: null, error: true });
         });
     });
 });

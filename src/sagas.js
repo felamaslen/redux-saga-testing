@@ -3,16 +3,13 @@ import axios from 'axios';
 
 import { resultLoaded } from './actions';
 
-export const selectInputString = {
-    postfix: state => state.testString.postfix,
-    infix: state => state.testString.infix
-};
+export const selectInputString = state => state.input;
 
-export function *loadProcessedResult({ category }) {
-    const raw = yield select(selectInputString[category]);
+export function *loadProcessedResult() {
+    const raw = yield select(selectInputString);
 
     try {
-        const { data } = yield call(axios.get, `evaluate-${category}?${category}=${encodeURIComponent(raw)}`);
+        const { data } = yield call(axios.get, `evaluate-infix?infix=${encodeURIComponent(raw)}`);
 
         const result = Number(data.result);
 
@@ -20,10 +17,10 @@ export function *loadProcessedResult({ category }) {
             throw new Error('invalid result');
         }
 
-        yield put(resultLoaded({ category, result }));
+        yield put(resultLoaded({ result }));
     }
     catch (err) {
-        yield put(resultLoaded({ category, err: err.message }));
+        yield put(resultLoaded({ err: err.message }));
     }
 }
 

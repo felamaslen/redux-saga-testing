@@ -9,11 +9,8 @@ import axios from 'axios';
 
 describe('Sagas - test type 0 (native)', () => {
     describe('selectInputString', () => {
-        it('should get testString from state', () => {
-            expect(sagas.selectInputString.postfix({ testString: { postfix: 'foo' }, foo: 'bar' }))
-                .to.equal('foo');
-
-            expect(sagas.selectInputString.infix({ testString: { infix: 'foo' }, foo: 'bar' }))
+        it('should get input from state', () => {
+            expect(sagas.selectInputString({ input: 'foo', bar: 'baz' }))
                 .to.equal('foo');
         });
     });
@@ -33,7 +30,7 @@ describe('Sagas - test type 0 (native)', () => {
         let gen = null;
         beforeEach(() => {
             // create an instance of the generator function before each test
-            gen = sagas.loadProcessedResult({ category: 'postfix' });
+            gen = sagas.loadProcessedResult();
         });
 
         it('should select the test string from state', () => {
@@ -41,7 +38,7 @@ describe('Sagas - test type 0 (native)', () => {
             const result = gen.next();
 
             // assert that something was done
-            expect(result.value).to.deep.equal(select(sagas.selectInputString.postfix));
+            expect(result.value).to.deep.equal(select(sagas.selectInputString));
 
             // call next() and assert that the saga is not done
             expect(gen.next().done).to.equal(false)
@@ -54,10 +51,10 @@ describe('Sagas - test type 0 (native)', () => {
             // call next() with an example of what the previous test should yield
             // this will go to the next step in the generator function, *as if* this test value
             // was returned by the first asynchronous step
-            const result = gen.next('3 2 + 5 /');
+            const result = gen.next('(3 + 2) / 5');
 
             // assert on the next yield from the saga
-            expect(result.value).to.deep.equal(call(axios.get, 'evaluate-postfix?postfix=3%202%20%2B%205%20%2F'));
+            expect(result.value).to.deep.equal(call(axios.get, 'evaluate-infix?infix=(3%20%2B%202)%20%2F%205'));
 
             // call next() and assert that the saga is not done
             expect(gen.next().done).to.equal(false)
@@ -74,7 +71,7 @@ describe('Sagas - test type 0 (native)', () => {
             const result = gen.next({ data: { result: 1 } });
 
             // assert on the next yield from the saga - it should be an action dispatch
-            expect(result.value).to.deep.equal(put({ type: 'RESULT_LOADED', category: 'postfix', result: 1 }));
+            expect(result.value).to.deep.equal(put({ type: 'RESULT_LOADED', result: 1 }));
 
             // call next() and assert that the saga is done
             expect(gen.next().done).to.equal(true)
@@ -89,7 +86,7 @@ describe('Sagas - test type 0 (native)', () => {
             // simulate the throwing of an error
             const result = gen.throw(new Error('something bad happened'));
 
-            expect(result.value).to.deep.equal(put({ type: 'RESULT_LOADED', category: 'postfix', err: 'something bad happened' }));
+            expect(result.value).to.deep.equal(put({ type: 'RESULT_LOADED', err: 'something bad happened' }));
 
             expect(gen.next().done).to.equal(true)
         });
@@ -101,7 +98,7 @@ describe('Sagas - test type 0 (native)', () => {
 
             const result = gen.next({ data: { result: 'not-a-number' } });
 
-            expect(result.value).to.deep.equal(put({ type: 'RESULT_LOADED', category: 'postfix', err: 'invalid result' }));
+            expect(result.value).to.deep.equal(put({ type: 'RESULT_LOADED', err: 'invalid result' }));
 
             expect(gen.next().done).to.equal(true)
         });

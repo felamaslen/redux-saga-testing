@@ -15,20 +15,15 @@ describe('<InputGroup />', () => {
         loaded = null;
 
         props = {
-            category: 'postfix',
-            onChange: category => () => {
-                changed = category;
+            onChange: () => {
+                changed = true;
             },
-            onLoad: category => () => {
-                loaded = category;
+            onLoad: () => {
+                loaded = true;
             },
-            errorValue: false,
-            value: {
-                postfix: '3 * 5'
-            },
-            result: {
-                postfix: 15
-            }
+            error: false,
+            value: '3 * 5',
+            result: 15
         };
     });
 
@@ -43,19 +38,19 @@ describe('<InputGroup />', () => {
         expect(wrapper.childAt(2).is('span.saga-testing-result')).to.equal(true);
     });
 
-    describe('Postfix string input', () => {
+    describe('String input', () => {
         it('should be rendered', () => {
             const wrapper = shallow(<InputGroup {...props} />);
 
             expect(wrapper.childAt(0).children()).to.have.length(2);
 
             expect(wrapper.childAt(0).childAt(0).is('label')).to.equal(true);
-            expect(wrapper.childAt(0).childAt(0).text()).to.equal('Input a postfix expression here:');
+            expect(wrapper.childAt(0).childAt(0).text()).to.equal('Input an infix expression here:');
 
             expect(wrapper.childAt(0).childAt(1).is('input.saga-testing-input')).to.equal(true);
         });
         it('should render an error class', () => {
-            const wrapper = shallow(<InputGroup {...props} errorValue="postfix" />);
+            const wrapper = shallow(<InputGroup {...props} error={true} />);
 
             expect(wrapper.childAt(0).childAt(1).hasClass('error')).to.equal(true);
         });
@@ -71,7 +66,7 @@ describe('<InputGroup />', () => {
 
             wrapper.childAt(0).childAt(1).simulate('change', { target: { value: 'bar' } });
 
-            expect(changed).to.equal('postfix');
+            expect(changed).to.equal(true);
         });
     });
 
@@ -88,7 +83,7 @@ describe('<InputGroup />', () => {
 
             wrapper.childAt(1).simulate('click');
 
-            expect(loaded).to.equal('postfix');
+            expect(loaded).to.equal(true);
         });
     });
 
@@ -98,10 +93,15 @@ describe('<InputGroup />', () => {
 
             expect(wrapper.childAt(2).text()).to.equal('Result: 15');
         });
-        it('should display an error if one occurred', () => {
-            const wrapper = shallow(<InputGroup {...props} errorValue="postfix" />);
+        it('should display nothing if result is null', () => {
+            const wrapper = shallow(<InputGroup {...props} result={null} />);
 
-            expect(wrapper.childAt(2).text()).to.equal('Invalid postfix string!');
+            expect(wrapper.childAt(2).text()).to.equal('');
+        });
+        it('should display an error if one occurred', () => {
+            const wrapper = shallow(<InputGroup {...props} error={true} />);
+
+            expect(wrapper.childAt(2).text()).to.equal('Invalid input! (Must be infix string)');
         });
     });
 });

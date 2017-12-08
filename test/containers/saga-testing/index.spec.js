@@ -5,80 +5,53 @@ import React from 'react';
 import shallow from '../../shallow-with-store';
 import { createMockStore } from 'redux-test-utils';
 import SagaTesting from '../../../src/containers/saga-testing';
+import ResultsList from '../../../src/components/results-list';
 import InputGroup from '../../../src/components/input-group';
 
 describe('<SagaTesting />', () => {
+    const state = {
+        history: ['foo'],
+        input: '',
+        result: null,
+        error: false
+    };
+
     it('should render its basic structure', () => {
-        const wrapper = shallow(<SagaTesting />, createMockStore({
-            testString: {
-                postfix: ''
-            },
-            result: {
-                postfix: null
-            },
-            error: false
-        })).dive();
+        const wrapper = shallow(<SagaTesting />, createMockStore(state)).dive();
 
         expect(wrapper.is('div.saga-testing-outer')).to.equal(true);
 
         expect(wrapper.children()).to.have.length(2);
     });
 
-    it('should render a postfix input group', () => {
-        const store = createMockStore({
-            testString: {
-                postfix: ''
-            },
-            result: {
-                postfix: null
-            },
-            error: false
-        });
+    it('should render a results list', () => {
+        const wrapper = shallow(<SagaTesting />, createMockStore(state)).dive();
 
-        const wrapper = shallow(<SagaTesting />, store).dive();
-
-        expect(wrapper.childAt(0).is(InputGroup)).to.equal(true);
-        expect(wrapper.childAt(0).props()).to.deep.include({
-            category: 'postfix',
-            errorValue: false,
-            value: { postfix: '' },
-            result: { postfix: null }
-        });
-
-        expect(store.isActionDispatched({ type: 'INPUT_CHANGED', category: 'postfix', value: 'foo' })).to.equal(false);
-
-        wrapper.childAt(0).props().onChange('postfix')({ target: { value: 'foo' } });
-
-        expect(store.isActionDispatched({ type: 'INPUT_CHANGED', category: 'postfix', value: 'foo' })).to.equal(true);
+        expect(wrapper.childAt(0).is(ResultsList)).to.equal(true);
+        expect(wrapper.childAt(0).props()).to.deep.equal({ history: ['foo'] });
     });
 
-    it('should render an infix input group', () => {
-        const store = createMockStore({
-            testString: {
-                infix: ''
-            },
-            result: {
-                infix: null
-            },
-            error: false
-        });
-
-        const wrapper = shallow(<SagaTesting />, store).dive();
+    it('should render an input group', () => {
+        const wrapper = shallow(<SagaTesting />, createMockStore(state)).dive();
 
         expect(wrapper.childAt(1).is(InputGroup)).to.equal(true);
         expect(wrapper.childAt(1).props()).to.deep.include({
-            category: 'infix',
-            errorValue: false,
-            value: { infix: '' },
-            result: { infix: null }
+            error: false,
+            value: '',
+            result: null
         });
-
-        expect(store.isActionDispatched({ type: 'INPUT_CHANGED', category: 'infix', value: 'foo' })).to.equal(false);
-
-        wrapper.childAt(1).props().onChange('infix')({ target: { value: 'foo' } });
-
-        expect(store.isActionDispatched({ type: 'INPUT_CHANGED', category: 'infix', value: 'foo' })).to.equal(true);
     });
 
+    it('should dispatch an onChange event when the input is changed', () => {
+        const store = createMockStore(state);
+
+        const wrapper = shallow(<SagaTesting />, store).dive();
+
+        expect(store.isActionDispatched({ type: 'INPUT_CHANGED', value: 'foo' })).to.equal(false);
+
+        wrapper.childAt(1).props().onChange({ target: { value: 'foo' } });
+
+        expect(store.isActionDispatched({ type: 'INPUT_CHANGED', value: 'foo' })).to.equal(true);
+    });
 });
 

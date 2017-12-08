@@ -2,40 +2,44 @@ import { createReducer } from 'redux-create-reducer';
 
 import initialState from './store/initial-state';
 
-export function changeInputValue(state, { category, value }) {
-    return {
-        ...state,
-        testString: {
-            ...state.testString,
-            [category]: value
-        }
-    };
-}
+export const changeInputValue = (state, { value }) => ({
+    ...state,
+    input: value
+});
 
-export function loadResult(state, { category, result, err }) {
+export function loadResult(state, { result, err }) {
     if (err) {
         return {
             ...state,
-            result: {
-                ...state.result,
-                [category]: null
-            },
-            error: category
+            result: null,
+            error: true
         };
     }
 
     return {
         ...state,
-        result: {
-            ...state.result,
-            [category]: result
-        },
-        error: false
+        error: false,
+        history: [
+            ...state.history,
+            {
+                input: state.input,
+                result
+            }
+        ],
+        result
     };
 }
 
-export default createReducer(initialState, {
-    'INPUT_CHANGED': (state, action) => changeInputValue(state, action),
-    'RESULT_LOADED': (state, action) => loadResult(state, action)
-});
+const reducers = [
+    ['INPUT_CHANGED', changeInputValue],
+    ['RESULT_LOADED', loadResult]
+];
+
+export default createReducer(
+    initialState,
+    reducers.reduce((red, [action, reducer]) => ({
+        ...red,
+        [action]: (state, payload) => reducer(state, payload)
+    }), {})
+);
 

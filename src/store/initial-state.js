@@ -1,9 +1,7 @@
 export default {
-    testString: {
-        postfix: '',
-        infix: ''
-    },
-    result: {},
+    input: '',
+    history: [],
+    result: null,
     error: false
 };
 
