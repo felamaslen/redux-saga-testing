@@ -2,6 +2,20 @@ $color-input: white;
 $color-result: rgb(90, 149, 194);
 $results-height: 400px;
 
+@mixin custom-scrollbar($color, $width) {
+    &::-webkit-scrollbar {
+        width: $width;
+    }
+    &::-webkit-scrollbar-track {
+        width: $width;
+        background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+        width: $width;
+        background-color: $color;
+    }
+}
+
 .results-history {
     margin: 0;
     padding: 0;
@@ -10,6 +24,7 @@ $results-height: 400px;
     font-size: 10pt;
     height: $results-height;
     overflow-y: auto;
+    @include custom-scrollbar(rgb(129, 89, 129), 8px);
 
     .result-history-item {
         display: flex;
