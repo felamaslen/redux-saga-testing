@@ -2,6 +2,7 @@ import React from 'react';
 
 import Calculator from '../../containers/calculator';
 
+import './favicon.png';
 import './style.scss';
 
 export default function App() {
