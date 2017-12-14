@@ -4,8 +4,7 @@ const express = require('express');
 const winston = require('winston');
 const webpack = require('webpack');
 const { version } = require('../package.json');
-const evaluatePostfix = require('./evaluate-postfix');
-const evaluateInfix = require('./evaluate-infix');
+const { evaluatePostfix, evaluateInfix } = require('calculator-lib');
 
 function run() {
     const app = express();
