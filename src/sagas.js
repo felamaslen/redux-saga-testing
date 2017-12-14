@@ -27,9 +27,11 @@ export function *loadProcessedResult({ category }) {
     }
 }
 
+function *watchLoadResult() {
+    yield takeEvery('LOAD_INITIATED', loadProcessedResult);
+}
+
 export default function *rootSaga() {
-    yield fork(function *watchLoadResult() {
-        yield takeEvery('LOAD_INITIATED', loadProcessedResult);
-    });
+    yield fork(watchLoadResult);
 }
 
